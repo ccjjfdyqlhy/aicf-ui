@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools>=77.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aicf-ui"
+version = "0.1.0"
+description = "AICF Web 控制台 —— 本地模型管理、对话、资源调度，全部跑在你自己的机器上"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+authors = [{ name = "Jeffery Darkstar", email = "ccjjfdyqlhy@outlook.com" }]
+keywords = ["agent", "llm", "webui", "local-first", "aicf"]
+classifiers = [
+    # 注：`License ::` 分类器已被 PEP 639 的 SPDX license 表达式取代，
+    # setuptools>=77 同时遇到两者会直接报错，所以这里不再写 License 分类器。
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "aicf-core>=1.0.0,<2",
+    "fastapi>=0.100",
+    "uvicorn>=0.20",
+    "PyYAML>=6.0",
+    "python-dotenv>=1.0.0",
+    "requests>=2.28.0",
+]
+
+[project.optional-dependencies]
+# 语音能力需要 aicf-dsn（软依赖，未安装时相关面板会降级而不是报错）
+voice = ["aicf-dsn>=0.1.0"]
+# 本地模型的其它运行时
+full = ["numpy>=1.24.0", "psutil>=5.9", "rich>=13.0.0"]
+
+[project.scripts]
+aicf-ui = "aicf_ui.entry:main"
+
+[project.urls]
+Homepage = "https://github.com/ccjjfdyqlhy/aicf-ui"
+Repository = "https://github.com/ccjjfdyqlhy/aicf-ui"
+Issues = "https://github.com/ccjjfdyqlhy/aicf-ui/issues"
+
+[tool.setuptools.packages.find]
+include = ["aicf_ui*"]
+
+[tool.setuptools.package-data]
+aicf_ui = ["static/**/*", "*.md", "model_profiles.example/*.yaml", "character_cards/*.yaml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+markers = [
+  "slow: 运行较慢的测试",
+  "integration: 需要外部服务/设备/网络的测试",
+  "known_broken: 已确认的资产漂移，待重新对齐",
+]
+addopts = "--continue-on-collection-errors -m 'not known_broken'"

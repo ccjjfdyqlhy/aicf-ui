@@ -1,0 +1,31 @@
+# aicf-ui 运行依赖
+#
+# 用法：
+#   pip install -r requirements.txt
+#
+# 说明：底层库（Agent 内核、模型路由、工具协议）由 `aicf-core` 提供，
+#       这里只列控制台自身的额外依赖。
+
+# ── 底层库 ──
+# 1.0.0 尚未发布到 PyPI（线上为 0.6.1）；1.0 发布后改为 aicf-core>=1.0,<2
+aicf-core @ git+https://github.com/ccjjfdyqlhy/aicf-core.git
+
+# ── Web 服务 ──
+fastapi>=0.100
+uvicorn>=0.20
+
+# ── 被直接 import 的依赖 ──
+psutil>=5.9          # server.py 的系统资源监控（/api/system/resources）
+PyYAML>=6.0
+python-dotenv>=1.0.0
+requests>=2.28.0
+
+# ── 展示 ──
+rich>=13.0.0
+
+# ── 可选：全局 onboarding（TUI）──
+textual>=1.0
+httpx>=0.24
+
+# ── 可选：安全与凭据 ──
+# cryptography>=40.0.0
